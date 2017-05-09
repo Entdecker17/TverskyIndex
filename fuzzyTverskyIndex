@@ -1,0 +1,67 @@
+#########################################
+#                                       #
+#          FUZZY TVERSKY INDEX          #
+#                                       #
+#########################################
+
+#########################################
+# Title: Fuzzy Tversky Index            #
+# By: Jared Neumann                     #
+# Created: 12 March 2017                #
+# Modified: 8 May 2017                  #
+# Description: The Fuzzy Tversky Index  #
+# is a similarity measure on two sets   #
+# whose elements are nonbinary members. #
+#########################################
+
+#Example input:
+#Earth's atmosphere: 0.7808,0.2095,0.0093,0.0004
+#Mars's atmosphere: 0.027,0.013,0.016,0.9532
+#Venus's atmosphere: 0.035,0.00,0.007,0.9650
+#These are elements by percentage of the atmosphere (indexed already). Compare all three to see
+#which has atmosphere most similar to Earth's!
+
+def fuzzy_Tversky(a,b,x=1,y=1):
+    
+    #Get the fuzzy pieces of Tversky's similarity index.
+    #Cardinality --> Sigma Count
+    #First, find the min of each membership function.
+    minimum_degrees = []
+    for i in range(0,len(a)):
+      minimum_degrees.append(min(float(a[i]),float(b[i])))
+      
+    #Then sum the total to get the fuzzy cardinality.
+    sigma_count = sum(minimum_degrees)
+
+    #Set Difference X-Y --> Bonded Difference X0Y
+    #First, subtract the second set of degrees from the first.
+    subtract_ab = []
+    for i in range(0,len(a)):
+      
+      #Then append the maximum of 0 or the result of the subtraction.
+      if float(a[i])-float(b[i]) <= 0:
+        subtract_ab.append(0)
+      else:
+        subtract_ab.append(float(a[i])-float(b[i]))
+        
+    #Finally, sum the total to get the bonded difference.
+    bonded_difference_ab = sum(subtract_ab)
+    
+    #Set Difference Y-X --> Bonded Difference Y0X
+    #First, subtract the second set of degrees from the first.
+    subtract_ba = []
+    for i in range(0,len(a)):
+      
+      #Then append the maximum of 0 or the result of the subtraction.
+      if float(b[i])-float(a[i]) <= 0:
+        subtract_ba.append(0)
+      else:
+        subtract_ba.append(float(b[i])-float(a[i]))
+        
+    #Finally, sum the total to get the bonded difference.
+    bonded_difference_ba = sum(subtract_ba)
+    
+    #The last step is to plug the numbers we've found into the Tversky index formula.
+    fuzzy_tversky = sigma_count / (sigma_count + bonded_difference_ab + bonded_difference_ba)
+    
+    return fuzzy_tversky
