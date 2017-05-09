@@ -1,0 +1,43 @@
+###########################################
+#                                         #
+#             TVERSKY INDEX               #
+#                                         #
+###########################################
+
+###########################################
+# Title: Tversky Index                    #
+# By: Jared Neumann                       #
+# Created: 12 March 2017                  #
+# Modified: 9 May 2017                    #
+# Description: The Tversky Index is a     #
+# measure of similarity between sets that #
+# is not a metric.                        #
+###########################################
+
+#This function takes four arguments: a,b which are 
+#lists that will be turned into sets; and x,y which
+#are optional weighting factors to modify how much
+#set differences count toward the total similarity.
+
+def tversky(a,b,x=1,y=1):
+
+    #Convert passed lists into sets.
+    a = set(a)
+    b = set(b)
+
+    #Get the pieces of Tversky's index.
+    #The cardinality of what the sets have in common.
+    c = len(a & b)
+
+    #The cardinality of what a has that b doesn't.
+    #Multiplied by a weighting factor.
+    d = x*len(a - b)
+
+    #The cardinality of what b has that a doesn't.
+    #Multiplied by a weighting factor.
+    e = y*len(b - a)
+
+    #Put it all together into the following formula.
+    f = float(c / (c + d + e))
+    
+    return f
