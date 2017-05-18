@@ -21,7 +21,20 @@
 #These are elements by percentage of the atmosphere (indexed already). Compare all three to see
 #which has atmosphere most similar to Earth's!
 
+#a,b are lists.
 def fuzzy_Tversky(a,b,x=1,y=1):
+  
+    #Interpret the null values.
+    #If it doesn't matter what value the attribute has, then we maximize similarity.
+    #Convert null values to the corresponding values in the compared phoneme.
+    for i in range(0,len(a)):
+      if a[i] == "null" and b[i] != "null":
+        a[i] = b[i]
+      elif a[i] == "null" and b[i] == "null":
+        a[i] = 0
+        b[i] = 0
+      elif b[i] == "null" and a[i] != "null":
+        b[i] = a[i]
     
     #Get the fuzzy pieces of Tversky's similarity index.
     #Cardinality --> Sigma Count
